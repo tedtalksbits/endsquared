@@ -1,17 +1,18 @@
-name: Remote SSH
-on: [push]
-jobs:
+name: Deploy to Server
 
-  build:
-    name: Build
-    runs-on: ubuntu-latest
+on:
+  push:
+    branches:
+      - development  # Trigger the workflow when code is pushed to the development branch
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, ubuntu]  # This ensures the job runs on the self-hosted runner with the 'ubuntu' label
+
     steps:
-    - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.IP }}
-        username: ${{ secrets.USER }}
-        password: ${{ secrets.PRIVATE_KEY }}
-        port: ${{ secrets.PORT }}
-        script: |
-          echo "${github.actor} was on the server"
+    - name: Checkout code
+      uses: actions/checkout@v3  # Check out the code from the repository
+
+    - name: Deploy to server
+      run: |
+        echo "The runner is live!!!!!!!!"
